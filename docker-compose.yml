@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  flask-app:
+    container_name: flask-app
+    image: i201814/ca4_web
+    restart: always
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./app:/app
+    environment:
+      DBHOST: mysql-db
+      DBUSER: root
+      DBNAME: testdb
+      DBPASS: testing321
+    networks:
+      - backend
+
+  mysql-db:
+    container_name: mysql-db
+    image: i201814/ca4_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: testing321
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: testing321
+
+    ports:
+      - '3308:3306'
+    volumes:
+      - ./database:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  app:
+  database:
