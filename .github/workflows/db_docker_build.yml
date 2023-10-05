@@ -1,0 +1,20 @@
+name: Db docker build for i201833
+
+on:
+  push:
+    branches: [ "i201833" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: docker login
+      env: 
+        DOCKER_USER:  ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag i201814/ca4_db:latest
+    - name: Docker push
+      run: docker push i201814/ca4_db:latest
